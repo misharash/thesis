@@ -1,0 +1,308 @@
+\documentclass[11pt]{gsasthesis} % 10,11 and 12pt fonts allowed
+
+%%%%%%%%%%%%%%%% PACKAGES YOU PROBABLY WANT %%%%%%%%%%%%%%%%
+% Include packages you want. The gsasthesis style file already includes
+% packages "setspace" and "tocbibind".
+
+\usepackage{etex} % extend the number of registers
+
+% GSAS: "all margins should be at least 1 inch."
+\usepackage[margin={1.2in}]{geometry}
+% If you want asymmetric margins for two-sided documents, use the "twoside"
+% option, as in
+% \usepackage[top=1in,bottom=1.5in,left=1in,right=1.5in,twoside]{geometry} The
+% left and right options become inner and outer margins. The default horizontal
+% latex margin ratio is 2:3. The default vertical top:bottom margin ratio is 2:3
+% also. You can also set it directly by passing the hmarginratio option to the
+% geometry package, as in
+% \usepackage[top=1in,left=1in,vmarginratio=2:3,hmarginratio=2:5,twoside]{geometry}
+
+% Appendix package. Not necessary, but it does make managing appendices easier
+% before I stopped using the appendix environment, cleveref referred to appendices as sections
+% \usepackage[titletoc]{appendix}
+
+%%%%%%%%%%%%%%%% PACKAGES MAY WANT %%%%%%%%%%%%%%%%
+
+% \usepackage{lineno}
+% \linenumbers
+
+% sideways tables and figures
+\usepackage{rotating}
+
+% tables that spill over multiple pages
+\usepackage{longtable}
+
+% references
+\usepackage{natbib}
+
+% fonts that are nicer than defaults
+% but misrender some math symbols so I commented them out
+% \usepackage[sc]{mathpazo}
+% \usepackage{courier}
+
+% MNRAS Times fonts
+% don't really make a difference
+% \usepackage{newtxtext,newtxmath}
+
+% Use 8-bit encoding that has 256 glyphs, pretty please
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% Allow "Thomas van Noord" and "Simon de Laguarde" and alike to be sorted by "N" and "L" etc. in the bibliography.
+% Write the name in the bibliography as "\VAN{Noord}{Van}{van} Noord, Thomas"
+\DeclareRobustCommand{\VAN}[3]{#2}
+\let\VANthebibliography\thebibliography
+\def\thebibliography{\DeclareRobustCommand{\VAN}[3]{##3}\VANthebibliography}
+
+% babel is required for blindtext, which generates random text
+\usepackage[english]{babel}
+% \usepackage{blindtext}
+
+% math support
+\usepackage{amsmath,amssymb}
+
+% Slightly tweak font spacing for aesthetics
+\usepackage{microtype}
+
+% You need the footmisc package with the stable option if you want to have
+% footnotes inside section titles, for example, to say that a particular chapter
+% has been co-authored with someone. The multiple option ensures that there is a
+% comma between two consecutive footnotes
+\usepackage[stable,multiple]{footmisc}
+
+% to include the degree/thesis acceptance certificate
+\usepackage{pdfpages}
+
+% my own packages
+\usepackage{aas_macros}
+\usepackage{hyperref}
+\hypersetup{ %
+			% colorlinks=true,%
+			pdfauthor={Mykhailo Rashkovetskyi},%
+			pdftitle={PhD Dissertation: Enhancing the analysis of the large-scale structure of the Universe for cutting-edge cosmological surveys with two-point correlation function and beyond},%
+			% citecolor=blue%
+			}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{doi}
+
+%%% From KP7 paper %%%
+%%% THESE MACROS ARE FOR REFERENCES TO EQS, FIGS, ETC %%%%
+%%% use \cref{} instead of \ref{} and no need to add Sec./Eq./etc by hand %%%
+\usepackage[nameinlink,noabbrev]{cleveref}
+\crefname{equation}{Eq.}{Eqs.}
+\crefname{chapter}{Chapter}{Chapters}
+\crefname{section}{Section}{Sections}
+\crefname{subsection}{Section}{Sections}
+\crefname{subsubsection}{Section}{Sections}
+\crefname{appendix}{Appendix}{Appendices}
+\crefname{subappendix}{Appendix}{Appendices}
+\crefname{subsubappendix}{Appendix}{Appendices}
+\crefname{figure}{Fig.}{Figs.}
+\crefname{table}{Table}{Tables}
+\crefname{figure}{Figure}{Figures}
+\crefname{equation}{Equation}{Equations}
+
+\usepackage[caption=false]{subfig}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+
+% for the flowchart(s)
+\tikzstyle{start} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=yellow!30]
+\tikzstyle{stop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\usepackage{bm}
+\usepackage{multirow}
+\usepackage{physics}
+\usepackage{cancel}
+
+% my definitions
+\newcommand{\av}[1]{\langle{#1\rangle}}
+\newcommand{\Arg}[1]{{\left( #1 \right)}}
+\newcommand{\Argl}[1]{{\left( #1 \right.}}
+\newcommand{\Argr}[1]{{\left. #1 \right)}}
+\newcommand{\Args}[1]{{\left[ #1 \right]}}
+\newcommand{\Argf}[1]{{\left\{ #1 \right\}}}
+\newcommand{\Avg}[1]{{\left\langle #1 \right\rangle}}
+\newcommand{\Abs}[1]{{\left| #1 \right|}}
+\newcommand{\Rightbar}[1]{{\left. #1 \right|}}
+\let\vec\bm
+
+\DeclareMathOperator{\cov}{cov}
+%\DeclareMathOperator{\tr}{tr} % already defined in physics package
+\DeclareMathOperator{\Var}{Var}
+
+\newcommand{\SE}[1]{10^{#1}} 
+\newcommand{\E}[1]{\hspace{-0.01in}\times\hspace{-0.02in}\SE{#1}}
+
+\newcommand{\ihMpc}{h^{-1}{\rm Mpc}}
+\newcommand{\ihGpc}{h^{-1}{\rm Gpc}}
+
+\newcommand{\desimtwo}{DESI-M2}
+\newcommand{\EZmocksraw}{Firstgen EZ mocks}
+\newcommand{\EZmockraw}{Firstgen EZ mock}
+\newcommand{\EZmocks}{{\tt \EZmocksraw{}}}
+\newcommand{\EZmock}{{\tt \EZmockraw{}}}
+\newcommand{\themocks}{\desimtwo{} \EZmocks{}}
+\newcommand{\themock}{\desimtwo{} \EZmock{}}
+\newcommand{\themocksraw}{\desimtwo{} \EZmocksraw{}}
+
+\newcommand{\rascalc}{{\sc RascalC}}
+% gather other software names here too in case the format needs to be changed, e.g. from \tt to \sc
+\newcommand{\pycorr}{{\sc pycorr}}
+\newcommand{\pyrecon}{{\sc pyrecon}}
+\newcommand{\desilike}{{\sc desilike}}
+
+\newcommand{\safett}[1]{\texorpdfstring{{\tt #1}}{#1}}
+\newcommand{\safesc}[1]{\texorpdfstring{{\sc #1}}{#1}}
+
+\newcommand{\abacus}{\safesc{Abacus}}
+\newcommand{\abacussummit}{\safesc{AbacusSummit}}
+\newcommand{\compaso}{\safesc{CompaSO}}
+\newcommand{\abacushod}{\safesc{AbacusHOD}}
+
+\newcommand{\desimock}{DESI DR1 mocks}
+\newcommand{\abacussecond}{\safett{Abacus-2}}
+\newcommand{\abacusfirst}{\safett{Abacus-1}}
+\newcommand{\ezmocks}{\safett{EZmocks}}
+
+\newcommand{\snrescaling}{\alpha_{\rm SN}}
+\newcommand{\snrescalingvec}{\bm \alpha_{\rm SN}}
+
+\newcommand{\alphaiso}{{\alpha_{\rm iso}}}
+\newcommand{\alphaap}{{\alpha_{\rm AP}}}
+
+\newcommand{\supplementarylink}{\doi{10.5281/zenodo.10895161}}
+
+% comment commands, need to be removed later
+% \newcommand{\misha}[1]{\textcolor{red}{(Misha: #1)}}
+
+% Nicer captions
+% \RequirePackage[font=small,format=plain,labelfont=bf,textfont=it]{caption}
+\RequirePackage[font=small,format=plain,labelfont=bf]{caption} % disabled italic
+\addtolength{\abovecaptionskip}{1ex}
+\addtolength{\belowcaptionskip}{1ex}
+
+
+%%%%%%%%%%%%%%%% COMPULSORY FIELDS %%%%%%%%%%%%%%%%
+
+\title{Enhancing the analysis of the large-scale structure of the Universe for cutting-edge cosmological surveys with two-point correlation function and beyond} % needs to match title on DAC
+\author{Mykhailo Rashkovetskyi} % full name as it appears on your GSAS record, needs
+                          % to match name on DAC
+\degreename{Doctor of Philosophy}
+\degreefield{Astronomy and Astrophysics} % Official name of subject as listed in GSAS
+                                % handbook
+\department{The Department of Astronomy} % official name of department
+\degreemonth{May} % Month of Defense (i.e. month when DAC was signed)
+\degreeyear{2025} % Year the DAC was signed
+\principaladvisor{Professor Daniel J. Eisenstein}
+
+% Optionally, you can add a second advisor, but you can't have three
+% \secondadvisor{Professor George Secondary}
+
+
+
+\begin{document}
+
+% DAC
+\includepdf[pages={1}]{DAC.pdf}
+% \clearpage
+
+%%%%%%%%%%%%%%%% FRONTMATTER %%%%%%%%%%%%%%%%
+
+\pagenumbering{roman} % GSAS wants roman page numbers for frontmatter
+
+% The following four pages are required in that order. The first two pages are
+% not allowed to have page numbers, this is taken care of in the class file.
+\thesistitlepage
+\copyrightpage
+\begin{abstract}
+For many years, we have known that the Universe is vast and expands with acceleration on the largest scales.
+However, dark energy, the substance supposedly driving this acceleration, might also weaken with time.
+Or at least the current standard model of cosmology has a problem explaining all the highest-quality data available.
+We present one of the key technical ingredients that enabled the Dark Energy Spectroscopic Instrument (DESI) Baryon Acoustic Oscillation (BAO) distance measurements --- the semi-analytic covariance matrices for the two-point correlation functions of point tracers.
+We then briefly discuss the cosmological implications of DESI BAO results, including the suggestion of dark energy.
+Then, we discuss a curious possibility of relieving the Hubble tension, the discrepancy in the expansion rate of the Universe today obtained directly from a Hubble diagram versus inferred indirectly from the CMB, without introducing fundamentally new physics.
+In the end, we explore a novel analysis technique combining galaxy redshift surveys with the data from the thermal Sunyaev-Zeldovich effect, a secondary anisotropy in the CMB.
+We aim to interpretably extract more valuable cosmological information from both than standard 2-point summary statistics allow.
+This would enable better consistency tests for the concordance model of cosmology and potentially new, exciting discoveries.
+\end{abstract}
+
+% Center headings for table of contents, LOT, and LOF and make them smaller so that "Abstract", "Acknowledgments" and "Contents" all look alike. Comment out if you want the default. If you want more control, use the "tocloft" package.
+\renewcommand{\contentsname}{\protect\centering\protect\Large Table of Contents}
+\renewcommand{\listtablename}{\protect\centering\protect\Large List of Tables}
+\renewcommand{\listfigurename}{\protect\centering\protect\Large List of Figures}
+
+\tableofcontents % Table of contents
+
+% The rest of the front matter: Lists of tables, figures, dedication and acknowledgments are optional. Comment out whatever you don't like
+\listoftables
+\listoffigures
+
+\begin{acknowledgments}
+  \input{acknowledgments}
+\end{acknowledgments}
+
+\begin{dedication}
+  To my beloved parents and grandparents.
+  My maternal grandfather loved physics and believed my mother had great potential as a physics researcher.
+  After much persuasion, he accepted and supported her inclination and decision to pursue a degree and a career in the history of fine arts instead.
+  We wish he could be with us longer to see his dream come true in the next generation.
+\end{dedication}
+
+
+%%%%%%%%%%%%%%%% MAIN BODY %%%%%%%%%%%%%%%%
+\pagenumbering{arabic} % reset page numbering and switch to arabic
+
+% Introductory chapter. Comment out if you don't have an intro chapter, but I think most committees expect you to have one.
+\input{intro}
+
+
+\input{RascalC-combined/RascalC-combined}
+
+\input{DESI-key/DESI-key}
+
+\input{H0-clumping/H0-clumping}
+
+\input{tSZ-selection-LRG/tSZ-selection-LRG}
+
+% \chapter{Hook\footnote{Co-authored with my advisor}}\label{ch:1}
+% \input{chapter1}
+
+\input{conclusion.tex}
+
+%%%%%%%%%%%%%%%% BACK MATTER %%%%%%%%%%%%%%%%
+
+% Put appendices, bibliography, and supplemental materials here
+
+% The bibliography may be single-spaced within each entry, but must be
+% double-spaced between each entry. Most bibliography styles leave space between
+% entries, so that shouldn't be a problem.
+\begin{singlespacing}
+  % I like "References" better than "Bibliography"
+  \renewcommand{\bibname}{References}
+
+  % Any bibliography style that leaves space between entries is fine
+  % \bibliographystyle{ecca}
+  \bibliographystyle{mnras}
+  \bibliography{DESI_supporting_papers2025-05-11,combined_refs_cleaned,DESI-key/references,tSZ-selection-LRG/new_references,references,publications,combined_soft_cleaned}
+\end{singlespacing}
+
+% Appendices from all chapters should go at the end
+% \input{appendix}
+% \begin{appendices}
+\appendix
+
+\input{RascalC-combined/RascalC-combined-appendix}
+
+\input{H0-clumping/H0-clumping-appendix}
+
+\input{tSZ-selection-LRG/tSZ-selection-LRG-appendix}
+
+% \end{appendices}
+
+\end{document}

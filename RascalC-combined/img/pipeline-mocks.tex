@@ -1,0 +1,26 @@
+\begin{tikzpicture}[node distance=2cm]
+    \node (data) [start] {Data catalog};
+    \node (randoms) [start, left of=data, xshift=-4 cm] {Random catalog};
+    \node (mocks) [start, right of=data, xshift=2 cm] {Mock catalogs};
+    \node (mock_xis) [process, below of=mocks] {Mock 2PCFs};
+    \node (full_xi) [process, left of=mock_xis, xshift=-2 cm] {Full 2PCF};
+    \node (RR) [process, left of=full_xi, xshift=-2 cm, align=center] {$RR$ counts};
+    \node (mock_cov) [process, below of=mock_xis, align=center] {Sample covariance ${\bf C}_S$};
+    \node (RascalC) [process, below of=randoms, yshift=-2 cm] {\rascalc{}};
+    \node (full_model) [process, below of=RascalC, align=center] {Full model\\ ${\bf \tilde C}(\snrescaling)$};
+    \node (fit_alpha) [process, right of=full_model, xshift=2 cm] {Best fit: $\snrescaling^*$};
+    \node (full_cov) [stop, below of=full_model, align=center] {Full covariance\\ ${\bf C}_R = {\bf \tilde C}(\snrescaling^*)$};
+    \draw [arrow] (mocks) -- (mock_xis);
+    \draw [arrow] (data) -- (full_xi);
+    \draw [arrow] (randoms) -- (full_xi);
+    \draw [arrow] (randoms) -- (RR);
+    \draw [arrow] (mock_xis) -- (mock_cov);
+    \draw [arrow] (full_xi) -- (RascalC);
+    \draw [arrow] (RR) -- (RascalC);
+    \draw [arrow] (randoms) -- (RascalC);
+    \draw [arrow] (RascalC) -- (full_model);
+    \draw [arrow] (full_model) -- (fit_alpha);
+    \draw [arrow] (mock_cov) -- (fit_alpha);
+    \draw [arrow] (full_model) -- (full_cov);
+    \draw [arrow] (fit_alpha) -- (full_cov);
+\end{tikzpicture}

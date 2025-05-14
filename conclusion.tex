@@ -1,0 +1,79 @@
+\chapter{Conclusions and outlook}
+\label{ch:conclusion}
+
+Galaxy redshift surveys will remain a powerful cosmological probe in the near future.
+Among the key analyses of DESI DR2 \citep{DESI.DR2.DR2}, only the BAO \citep{DESI.DR2.BAO.lya,DESI.DR2.BAO.cosmo} have been finished, many others are ongoing.
+The products of the originally planned 5 years of observations could become available to the DESI collaboration next year.
+The plans beyond that include the upgraded DESI-2 and the next-generation Stage V instrument \citep{spectroscopic-roadmap-cosmic-frontier}.
+Besides DESI, the Euclid space telescope \citep{Euclid-overview} is already collecting data, and we hope to see quality spectroscopic products soon.
+The Roman Space Telescope \citep[also known as the Wide-Field Infrared Survey Telescope and the Joint Dark Energy Mission][]{WFIRST-2019} should be launched into space soon.
+
+A major part of this thesis (\cref{ch:RascalC}) was dedicated to the development of fast and reliable semi-analytical covariance matrices for 2-point correlation functions of cosmological point tracers.
+This approach is much cheaper (both in computing and human time resources) and more flexible than relying on sample variations in large suites of approximate simulations.
+Accordingly, it enabled or enhanced many tests of the galaxy and quasar BAO methodology for DESI DR1 \citep{DESI2024.III.KP4}, and then considerably streamlined and sped up the DR2 BAO analysis \citep{Y3.clust-s1.Andrade.2025,DESI.DR2.BAO.cosmo}.
+We are looking to further applications of the particular and more generic experience, besides the reiteration for the upcoming DESI Y3 BAO.
+
+Our first natural interest is the adjacent full-shape galaxy clustering analysis \citep[e.g,][]{DESI2024.V.KP5}.
+It considers more aspects than only the scale of the BAO feature, including redshift-space distortions and signals from the matter-radiation equality scale.
+Accordingly, this analysis informs us much better about the growth of cosmic structure, regulated by the nature of dark matter and gravity.
+
+The advantages come with challenges, such as higher-dimensional data vectors and accordingly covariance matrices (harder to estimate), and the need for more precise non-linear models with more parameters and more degeneracies between them.
+The future analysis of DR2 will likely include correlation functions or higher-point statistics to help break such degeneracies.
+It may be feasible to extend the covariance framework for these cases \citep[similarly to][]{rascalC-legendre-3}.
+We have already suggested a way to correct the simulation-based covariance for power spectra for the 2024 full-shape analysis \citep{DESI2024.V.KP5,DESI2024.II.KP3} using the \rascalc{} semi-analytical covariance matrices.
+
+The official DESI DR1 full-shape analysis \citep{DESI2024.V.KP5} has been conducted in Fourier space (power spectra instead of correlation functions).
+We understand it was motivated by concerns that the precision of the modeling, naturally conducted in Fourier space \citep{KP5s1-Maus}, may be partially lost in the Fourier transformation.
+However, \cite{KP5s5-Ramirez} reported a high quality of configuration-space (correlation function) modeling and analysis.
+
+\cite{DESI2024.V.KP5} also combined the DR1 BAO post-reconstruction results \citep{DESI2024.III.KP4} with full-shape power spectra, estimating their covariance via mocks.
+Analytical or semi-analytical covariance between the reconstructed correlation function and pre-reconstruction power spectrum would be beneficial, but it is very challenging.
+It might be feasible to compute the covariance between pre- and post-reconstruction correlation functions similarly to \cref{subsec:post-recon}.
+Additionally, we may improve the early implementation of the \rascalc{} covariance between modified\footnote{The difference from the conventional power spectra should be small at small scales.} power spectra and correlation functions \citep{HIPSTER-cov}.
+
+Our results also include a generic covariance matrix validation strategy, not specific to the numeric methods.
+In \cref{subsec:comparison-measures,sec:param-space-fisher} we have developed a brief, quantitative, and statistically interpretable framework for comparison with simulation-based covariances.
+These methods can be applied to a wide variety of observables besides correlation functions, from galaxy power spectra to CMB instrumental noise.
+
+Higher-point statistics could also be used in future DESI measurements of primordial non-Gaussianity \citep[building upon the completed analysis of DR1 by][]{ChaussidonY1fnl}.
+The dimensionality of the data vector grows fast with the number of points, and simulation-based covariances then require proportionally more mock realizations.
+The semi-analytical covariances can help to maintain high accuracy at low computation cost.
+
+Another promising direction is the joint analysis of multiple distinct galaxy types --- different tracers of the large-scale structure.
+In DESI, several target types overlap in volume, most notably Luminous Red Galaxies \citep[LRG,][]{LRG.TS.Zhou.2023} with Emission Line Galaxies \citep[ELG,][]{ELG.TS.Raichoor.2023} in the redshift range $0.8<z<1.1$, and ELG with quasars \citep{QSO.TS.Chaussidon.2023} in $1.1<z<1.6$.
+Additionally, the Bright Galaxy Survey \citep{BGS.TS.Hahn.2023} includes a wide variety of objects and can be separated into multiple sub-types, e.g., red and blue.
+Cross-correlations of different galaxies can break parameter degeneracies and effectively increase the measurement precision.
+They can also serve as a consistency check to ensure the different samples reflect the same underlying structure \citep[e.g., following][]{LSS-color-dependent-stochasticity}, with the potential to uncover new cosmological tensions.
+
+If the overlapping tracers are analyzed completely separately, valuable information from their cross-correlation remains unused.
+Moreover, the two samples are not independent but correlated to some degree, which needs to be quantified.
+The full analysis requires high-dimensional covariance matrices between all the auto-correlation and cross-correlation functions, and our semi-analytical framework provides them (in \cref{sec:cov-estimation-extra}).
+We have contributed a study of the optimal combination of DESI DR1 LRG and ELG into a single combined tracer \citep{KP4s5-Valcin}, which has been used for the 2024 BAO measurements \citep{DESI2024.III.KP4}.
+
+Our work on the DESI DR1 and DR2 BAO measurements empowered very intriguing cosmological findings \citep{DESI2024.VI.KP7A,DESI.DR2.BAO.cosmo}.
+We summarized some of them in \cref{ch:DESI-key}, focusing on dynamic dark energy and Hubble tension (which is not resolved by the dynamic dark energy preferred by DESI).
+This motivates us to become more involved in building and testing cosmological models capable of explaining either or both.
+
+We summarized our earlier exploration of a promising Hubble tension relief in \cref{ch:H0-clumping}.
+It was a follow-up on the idea of small-scale baryon clumping at recombination \citep{JP20}, possibly induced by primordial magnetic fields \citep{PMF11,PMF13,PMF19}, which gives a higher value of the Hubble constant from CMB even without new physics, and reduces the $S_8$ tension.
+Whereas alternative recombination does not require fundamentally new physics, quantifying the uncertainty in known effects is also crucially important.
+We conducted a detailed follow-up study with a more flexible and general model for inhomogeneous recombination.
+We determined that with data available at the time, the preference for the effect depends significantly on the assumed a priori distributions for clumping parameters, the amount of external Hubble constant measurements, and the inclusion of additional probes like BAO \citep[a conclusion similar to][]{sound-horizon-not-enough}.
+We found that the strongest constraints on alternative recombination come from high multipoles of the CMB power spectrum, the ``tail'' affected by Silk damping.
+We showed that the future CMB experiments, Simons Observatory \citep{SO} and CMB-S4 \citep{CMBS4,CMBS4white}, will give decisive evidence for or against clumpy recombination.
+It may be interesting to revisit the idea with the newest measurements, although some other groups have been working on alternative recombination more actively \citep[e.g.,][]{recombination-reconstruction-Lynch}.
+
+Synergies between advanced CMB and galaxy redshift samples are very promising.
+For example, joint analysis of CMB lensing with DESI galaxies has given tighter constraints on the growth of cosmic structure \citep{ACT-lensingxDESI-LRG-structure-formation-Kim,ACT-lensingxDESI-LRG-structure-formation-Sailer} and primordial non-Gaussianity \citep{DESI-QSOxPlanck-lensing-PNG,DESI-LRGxPlanck-lensing-PNG}.
+As well as the number of spectra with DESI, the measurements of secondary CMB anisotropies are improving rapidly with the current and next CMB experiments \citep{ACT-lensing-DR6,ACT-maps-DR6,SO,CMBS4,CMBS4white}.
+Joint analysis of different measurements has high potential to improve precision, provide valuable information on standing tensions, and discover new discrepancies.
+
+In \cref{ch:tSZ-selection-LRG} we are investigating new techniques using thermal Sunyaev-Zeldovich (tSZ) data instead.
+This work is partially inspired by known ideas for leveraging information from different environments: density-split \citep[e.g.][]{density-split-clustering-constrain-nuLCDM} and density-marked \citep[e.g.][]{density-marked-CF-MG} clustering, which deliver tighter cosmological constraints than the conventional 2-point correlation functions or power spectra.
+Strong tSZ signals are associated with distinct environments --- large galaxy clusters.
+We are grouping DESI luminous red galaxies \citep{LRG.TS.Zhou.2023} by the signal-to-noise ratio in the tSZ $y$ parameter map.
+We find that with increasing tSZ signal-to-noise, there are significant increases in large-scale galaxy bias (allowing multi-tracer benefits discussed above), the velocity dispersion \citep[allowing Finger-of-God mitigation for more precise and robust modeling, e.g.][]{removing-FoG} and the number of neighbors \citep[which could help inform the galaxy multiplet studies, e.g.][]{DESI-galaxy-multiplets-tidal-field}.
+
+Thus, we demonstrate that there is valuable cosmological information in the tSZ map beyond the individual clusters.
+We hope our preliminary findings are sufficient to draw attention to the topic.
+We are going to continue developing the adjacent analysis techniques and encourage others to join us.

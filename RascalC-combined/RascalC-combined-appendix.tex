@@ -1,0 +1,434 @@
+\chapter{Appendix to the covariance matrices\texorpdfstring{ (\cref{ch:RascalC})}{}}
+\graphicspath{{RascalC-combined/}}
+
+\section{Estimators for multi-tracer covariance matrices}
+\label{sec:cov-estimation-extra}
+
+In this section, we provide the generalized multi-tracer expressions for reference.
+We have not endeavored to validate them in this work because in the \ezmocks{} suite, different tracers have mostly been made from boxes at different redshifts.
+We expect that the shift of the galaxies' positions with time will not allow self-consistent cross-correlations in such circumstances.
+DESI has primarily focused on the LRG and ELG overlap in $z=0.8-1.1$ bin \citep{KP4s5-Valcin}, but \ezmocks{} for these tracers have been made from box snapshots at redshifts 1.1 and 0.95, respectively.
+
+We add one capital Latin superscript to all the overdensities to signify the tracer involved (e.g. $\delta^X_i$).
+For counts, it is two letters accordingly (e.g. $N^XN^Y$).
+
+\subsection{Angular bins}
+\label{sec:cov-estimation-multi-smu}
+
+The Landy-Szalay estimator for the multi-tracer correlation function is
+\begin{equation} \label{eq:Landy-Szalay-binned-multi}
+\qty(\hat\xi^{XY})_a^c = \frac{\qty(N^XN^Y)_a^c}{\qty(R^XR^Y)_a^c}.
+\end{equation}
+We make the following shorthand for the multi-tracer covariance:
+\begin{equation} \label{eq:cov2x2_def-multi}
+\qty(C^{XY,ZW})_{ab}^{cd} \equiv \cov \qty[\qty(\hat\xi^{XY})_a^c, \qty(\hat\xi^{ZW})_b^d].
+\end{equation}
+
+It is important to note that the shot-noise approximation works only for the same-tracer overdensities:
+\begin{equation} \label{eq:shot-noise-approximation-multi}
+\qty(\delta^X_i)^2 \approx \frac{\snrescaling^X}{n^X_i} \qty(1+\delta^X_i).
+\end{equation}
+
+The full multi-tracer expression for the model covariance is from \cite{rascalC} but with some changes in notation:
+\begin{align} \label{eq:Cov2x2estimator-multi}
+\qty(\tilde C^{XY,ZW})_{ab}^{cd} \qty(\snrescalingvec) = \qty(^4C^{XY,ZW})_{ab}^{cd} + \frac{\snrescaling^X}4 \qty[\delta^{XW} \qty(^3C^{X,YZ})_{ab}^{cd} + \delta^{XZ} \qty(^3C^{X,YW})_{ab}^{cd}] \\ \nonumber
++ \frac{\snrescaling^Y}4 \qty[\delta^{YW} \qty(^3C^{Y,XZ})_{ab}^{cd} + \delta^{YZ} \qty(^3C^{Y,XW})_{ab}^{cd}] \\ \nonumber
++ \frac{\snrescaling^X \snrescaling^Y}2 \qty[\delta^{XW} \delta^{YZ} + \delta^{XZ} \delta^{YW}] \qty(^2C^{XY})_{ab}^{cd}
+\end{align}
+with
+\begin{align} \label{eq:Cov2x2_234_Point_Defs-multi}
+\qty(^4C^{XY,ZW})_{ab}^{cd} &= \frac{1}{\qty(R^XR^Y)_a^c \qty(R^ZR^W)_b^d} \sum_{i\neq j\neq k\neq l} n^X_i n^Y_j n^Z_k n^W_l w^X_i w^Y_j w^Z_k w^W_l \Theta^a(r_{ij}) \\ \nonumber
+& \times \Theta^c(\mu_{ij}) \Theta^b(r_{kl}) \Theta^d(\mu_{kl}) \qty[\cancel{\eta^{({\rm c}),XYWZ}_{ijkl}} + \xi^{XZ}_{ik} \xi^{YW}_{jl} + \xi^{XW}_{il} \xi^{YZ}_{jk}] \\ \nonumber
+\qty(^3C^{Y,XZ})_{ab}^{cd} &= \frac{4}{\qty(R^XR^Y)_a^c \qty(R^YR^Z)_b^d} \sum_{i\neq j\neq k} n^X_i n^Y_j n^Z_k w^X_i \qty(w^Y_j)^2 w^Z_k \Theta^a(r_{ij}) \Theta^c(\mu_{ij}) \\ \nonumber
+& \times \Theta^b(r_{jk}) \Theta^d(\mu_{jk}) \qty[\cancel{\zeta^{XYZ}_{ijk}} + \xi^{XZ}_{ik}] \\ \nonumber
+\qty(^2C^{XY})_{ab}^{cd} &= \frac{2\delta^{ab}\delta^{cd}}{\qty(R^XR^Y)_a^c \qty(R^XR^Y)_b^d}\sum_{i\neq j} n^X_i n^Y_j \qty(w^X_i w^Y_j)^2 \Theta^a(r_{ij}) \Theta^c(\mu_{ij}) \qty[1+\xi^{XY}_{ij}],
+\end{align}
+where $\delta^{XY}$, $\delta^{ab}$ and $\delta^{cd}$ are Kronecker deltas; $\xi^{XY}_{ij} = \xi^{XY}\qty(r_{ij}, \mu_{ij})$ is the 2PCF of tracers $X$ and $Y$ evaluated at the separation between points number $i$ and $j$ (in practice the value is obtained by bicubic interpolation from the input grid of correlation function values).
+
+Analogously, $\zeta^{XYZ}_{ijk}$ and $\eta^{{(\rm c)},XYZW}_{ijkl}$ are the 3-point and connected 4-point correlation functions of the tracers listed in the superscript evaluated at the separations between $i,j,k$ and $i,j,k,l$ points, respectively.
+These non-Gaussian higher-point functions are included for completeness but dropped in practice, we reflected this by crossing them out in the expressions.
+
+The expressions for multi-tracer jackknife covariance can be constructed similarly.
+However, to the best of our knowledge, only the single-tracer jackknife auto-covariances have been used in practice.
+The shot-noise rescaling values have been tuned on each tracer separately.
+Therefore, the computation of the jackknife model for the other blocks of the full matrix has been unnecessary; the single-tracer expressions are sufficient.
+
+\subsection{Projected Legendre}
+\label{sec:cov-estimation-multi-legendre-projected}
+
+Note that the Legendre projection factors (\cref{eq:Legendre-projection-factors}) are the same for all tracers.
+Accordingly, the multi-tracer covariance is still projected linearly from the angularly binned one:
+\begin{equation} \label{eq:full-cov-projection-Legendre-multi}
+    \qty(\tilde C^{XY,ZW})_{ab}^{\ell\ell'} \equiv \cov \qty[\qty(\hat \xi^{XY})^\ell_a, \qty(\hat \xi^{ZW})^{\ell'}_b] = \sum_{c,d} \qty(\tilde C^{XY,ZW})_{ab}^{cd} F^\ell_c F^{\ell'}_d.
+\end{equation}
+Therefore the full covariance model is constructed analogously to \cref{eq:Cov2x2estimator-multi}:
+\begin{align} \label{eq:cov2x2_Legendre-multi}
+\qty(C^{XY,ZW})_{ab}^{\ell\ell'} = \qty(^4C^{XY,ZW})_{ab}^{\ell\ell'} + \frac{\snrescaling^X}{4} \qty[\delta^{XW} \qty(^3C^{X,YZ})_{ab}^{\ell\ell'} + \delta^{XZ} \qty(^3C^{X,YW})_{ab}^{\ell\ell'}] \\ \nonumber
++ \frac{\snrescaling^Y}{4} \qty[\delta^{YW} \qty(^3C^{Y,XZ})_{ab}^{\ell\ell'} + \delta^{YZ} \qty(^3C^{Y,XW})_{ab}^{\ell\ell'}] \\ \nonumber
++ \frac{\snrescaling^X \snrescaling^Y}{2} \qty(\delta^{XW} \delta^{YZ} + \delta^{XZ} \delta^{YW}) \qty(^2C^{XY})_{ab}^{\ell\ell'}.
+\end{align}
+with the following terms (similar to \cref{eq:Cov2x2_234_Point_Defs_Legendre_Projected}):
+\begin{align} \label{eq:Cov2x2_234_Point_Defs_Legendre_Projected-multi}
+\qty(^4C^{XY,ZW})_{ab}^{\ell\ell'} &= \sum_{i\neq j\neq k\neq l} n^X_i n^Y_j n^Z_k n^W_l w^X_i w^Y_j w^Z_k w^W_l \Theta^a(r_{ij}) \Theta^b(r_{kl}) \\ \nonumber
+& \times \qty[\cancel{\eta^{({\rm c}),XYWZ}_{ijkl}} + 2\xi^{XZ}_{ik} \xi^{YW}_{jl}] \sum_c \frac{\Theta^c(\mu_{ij}) F^\ell_c}{\qty(R^XR^Y)_a^c} \sum_d \frac{\Theta^d(\mu_{kl}) F^{\ell'}_d}{\qty(R^ZR^W)_b^d}, \\ \nonumber
+\qty(^3C^{Y,XZ})_{ab}^{\ell\ell'} &= 4 \sum_{i\neq j\neq k} n^X_i n^Y_j n^Z_k w^X_i \qty(w^Y_j)^2 w^Z_k \Theta^a(r_{ij}) \Theta^b(r_{jk}) \qty[\cancel{\zeta^{XYZ}_{ijk}} + \xi^{XZ}_{ik}] \\ \nonumber
+& \times \sum_c \frac{\Theta^c(\mu_{ij}) F^\ell_c}{\qty(R^XR^Y)_a^c} \sum_d \frac{\Theta^d(\mu_{jk}) F^{\ell'}_d}{\qty(R^YR^Z)_b^d}, \\ \nonumber
+\qty(^2C^{XY})_{ab}^{\ell\ell'} &= 2\delta^{ab} \sum_{i\neq j} n^X_i n^Y_j \qty(w^X_i w^Y_j)^2 \Theta^a(r_{ij}) \qty[1+\xi^{XY}_{ij}] \sum_c \frac{\Theta^c(\mu_{ij}) F^\ell_c F^{\ell'}_c}{\qty[\qty(R^XR^Y)_a^c]^2}.
+\end{align}
+
+The multi-tracer covariance model for Legendre multipoles of the 2PCF is implemented in the code and has been employed for overlapping tracers' cross-correlation in \cite{KP4s5-Valcin}.
+We omit the corresponding jackknife expressions as they have not been used.
+
+\section{Statistics of comparison metrics for noisy sample covariance matrix}
+\label{sec:cov-comparison-properties}
+
+Here we provide derivations of the expectation values for comparison metrics between a noisy sample covariance and the true covariance/precision matrix.
+This is useful for testing how close \rascalc{} results are to the latter.
+
+\subsection{KL divergence mean and variance}
+\label{subsec:kl-div-stats}
+
+A more generic setup -- two sample covariance matrices based on draws from a multivariate normal distribution -- has been considered in Appendix~D of \cite{rascalC}.
+However, the derivation was limited to the expectation value of the KL divergence between them, and we have not been able to find a reference about the metric's scatter around the mean (variance or standard deviation).
+In addition, we believe the final result there is slightly incorrect, namely $1$ should be subtracted from the number of samples.
+This is because for the estimate of sample covariance commonly used with mocks
+\begin{equation}
+X_{ab} = \frac1{n_S-1} \sum_{i=1}^{n_S} (x_{a,i} - \bar x_a) (x_{b,i} - \bar x_b)
+\end{equation}
+the mean is not known beforehand but estimated from the sample as well: $\bar x_a \equiv \frac1{n_S} \sum_{i=1}^{n_S} x_{a,i}$.
+This reduces the number of degrees of freedom by one.
+Then the covariance of the sample covariance matrix elements is
+\begin{equation} \label{eq:X-covariance}
+\cov (X_{ab}, X_{cd}) = \frac{C_{0,ac} C_{0,bd} + C_{0,ad} C_{0,bc}}{n_S-1}
+\end{equation}
+instead of
+$$ \cov (X_{ab}, X_{cd}) = \frac{C_{0,ac} C_{0,bd} + C_{0,ad} C_{0,bc}}{n_S} $$
+as in \cite{rascalC}.
+${\bm C}_0$ is the true underlying covariance matrix of the Gaussian distribution the samples are drawn from.
+The sample covariance estimate is unbiased, meaning that the expectation value is the true covariance: $\Avg{\bm X}={\bm C}_0$.
+Then, considering two sample covariance matrices ${\bf X}_i$ obtained from $n_S^{(i)}$ samples each, decomposing them as ${\bf X}_i={\bf C}_0+{\bf \delta X}_i$, Taylor expanding and only leaving the leading nontrivial (quadratic) order in ${\bf \delta X}_i$, we obtain
+\begin{equation} \label{eq:D_KL-expectation-2samples}
+\Avg{D_{\rm KL} \Arg{{\bf X}_1^{-1}, {\bf X}_2}} \approx \frac{N_{\rm bins}(N_{\rm bins}+1)}4 \Arg{\frac1{n_S^{(1)}-1} + \frac1{n_S^{(2)}-1}}
+\end{equation}
+instead of
+$$ \Avg{D_{\rm KL} \Arg{{\bf X}_1^{-1}, {\bf X}_2}} \approx \frac{N_{\rm bins}(N_{\rm bins}+1)}4 \Arg{\frac1{n_S^{(1)}} + \frac1{n_S^{(2)}}} $$
+as in \cite{rascalC}.
+
+Since in this work we only consider one sample covariance matrix, while the \rascalc{} results are not expected to follow the Wishart distribution, the more relevant result is for the true precision matrix ${\bf \Psi}_0$:
+\begin{equation} \label{eq:D_KL-expectation}
+\Avg{D_{\rm KL} \Arg{{\bf \Psi}_0, {\bf X}}} \approx \frac{N_{\rm bins}(N_{\rm bins}+1)}{4(n_S-1)},
+\end{equation}
+which can be obtained from \cref{eq:D_KL-expectation-2samples} by setting the first number of samples to infinity, reducing the noise in ${\bm X}_1^{-1}$ to zero.
+
+For the further derivations, it is convenient to ``normalize'' the covariance. Let us take
+\begin{equation} \label{eq:measurement-normalization}
+\bm y_i = {\bf \Psi}_0^{1/2} \bm x_i,
+\end{equation}
+where ${\bf \Psi}_0^{1/2}$ means the matrix square root of ${\bf \Psi}_0$ -- a matrix with the same eigenvectors and eigenvalues equal to the square roots of corresponding eigenvalues of the original matrix.
+Then
+\begin{equation}
+\cov (y_{a,i}, y_{b,j}) = \delta^{ij} \delta^{ab}.
+\end{equation}
+Let us also introduce $\bar y_a \equiv \frac1{n_S} \sum_{i=1}^{n_S} y_{a,i}$, define $\delta y_{a,i} \equiv y_{a,i} - \bar y_a$ (so that $\left\langle \delta y_{a,i} \right\rangle = 0$) and finally compute the ``normalized'' covariance matrix:
+\begin{equation} \label{eq:Y-definition}
+Y_{ab} \equiv \frac1{n_S-1} \sum_{i=1}^{n_S} \delta y_{a,i} \delta y_{b,i}.
+\end{equation}
+Then also
+\begin{equation} \label{eq:Y-relation}
+{\bf Y} = {\bf \Psi}_0^{1/2} {\bf X \Psi}_0^{1/2}.
+\end{equation}
+Let us compute
+\begin{equation}
+\cov (\delta y_{a,i}, \delta y_{b,j}) = \left\langle \delta y_{a,i} \delta y_{b,j} \right\rangle = \delta^{ij} \delta^{ab} - 2 \times \frac1{n_S} \delta^{ab} + n_S \times \frac1{n_S^2} \delta^{ab} = \left( \delta^{ij} - \frac1{n_S} \right) \delta^{ab}.
+\end{equation}
+As a consequence, $\Avg{\bf Y} = \bf \mathbb I$, and we can expand
+\begin{equation} \label{eq:delta-Y}
+{\bf Y} = {\bf \mathbb I} + {\bf \delta Y}
+\end{equation}
+while $\Avg{\bf \delta Y} = 0$. Also,
+\begin{equation} \label{eq:Y-covariance}
+\cov (Y_{ab}, Y_{cd}) = \left\langle \delta Y_{ab} \delta Y_{cd} \right\rangle = \frac{\delta^{ac} \delta^{bd} + \delta^{ad} \delta^{bc}}{n_S-1}.
+\end{equation}
+Now let us expand the KL divergence using the ``normalized'' covariance matrix, starting from
+\begin{equation}
+2 D_{\rm KL} \Arg{{\bf \Psi}_0, {\bf X}} = \tr \Arg{{\bf \Psi}_0 {\bf X}} - N_{\rm bins} - \ln \det \Arg{{\bf \Psi}_0 {\bf X}},
+\end{equation}
+we can write ${\bf \Psi}_0 = {\bf \Psi}_0^{1/2} {\bf \Psi}_0^{1/2}$, use the cyclic property of trace and determinant to arrive to
+\begin{equation}
+2 D_{\rm KL} \Arg{{\bf \Psi}_0, {\bf X}} = \tr \Arg{\bf Y} - N_{\rm bins} - \ln \det \Arg{\bf Y},
+\end{equation}
+remembering \cref{eq:Y-relation}.
+Then we expand in $\bf \delta Y$ (\cref{eq:delta-Y}):
+\begin{equation}
+2 D_{\rm KL} \Arg{{\bf \Psi}_0, {\bf X}} = \tr \Arg{\bf \delta Y} - \ln \det \Arg{\bf \mathbb I + \delta Y}.
+\end{equation}
+Now using $\ln \det {\bf A} = \tr \ln {\bf A}$ and expanding the second term in Taylor series up to quadratic order in $\bf \delta Y$ we obtain
+\begin{equation} \label{eq:D_KL-Y-approx}
+2 D_{\rm KL} \Arg{{\bf \Psi}_0, {\bf X}} \approx \frac12 \tr \Args{\Arg{\bf \delta Y}^2} = \frac12 \sum_{a,b=1}^{N_{\rm bins}} \delta Y_{ab} \delta Y_{ab}.
+\end{equation}
+Taking the expectation value of \cref{eq:D_KL-Y-approx} and using \cref{eq:Y-covariance}, one can re-derive \cref{eq:D_KL-expectation}. We will proceed to compute the variance:
+\begin{align}
+\Var \Argf{\tr \Args{\Arg{\bf \delta Y}^2}} =& \Avg{\Arg{\tr \Args{\Arg{\bf \delta Y}^2}}^2} - \Avg{\tr \Args{\Arg{\bf \delta Y}^2}}^2 \nonumber \\
+=& \sum_{a,b,c,d=1}^{N_{\rm bins}} [\left\langle \delta Y_{ab} \delta Y_{ab} \delta Y_{cd} \delta Y_{cd} \right\rangle - \left\langle \delta Y_{ab} \delta Y_{ab} \right\rangle \left\langle \delta Y_{cd} \delta Y_{cd} \right\rangle].
+\end{align}
+Full expansion gives
+\begin{equation}
+Y_{ab} Y_{ab} Y_{cd} Y_{cd} = \frac1{(n_S-1)^4} \sum_{i,j,k,l=1}^{n_S} \delta y_{a,i} \delta y_{b,i} \delta y_{a,j} \delta y_{b,j} \delta y_{c,k} \delta y_{d,k} \delta y_{c,l} \delta y_{d,l}.
+\end{equation}
+$\delta y$ are normally distributed and have zero means, so for them, we can use Wick's theorem to split this into all possible pairs. ($\bf \delta Y$ also has zero mean, but not a Gaussian distribution; this is why we need to go to a deeper level.)
+The total number of pairs is $8!/(4!\times 2^4)=105$, so it is easy to go over them in a computer program.
+Additionally, it is useful to check which ones are similar.
+It is apparent that the following five index permutations leave the expression unchanged: $a \leftrightarrow b$, $c \leftrightarrow d$, $i \leftrightarrow j$, $k \leftrightarrow l$ and $(a,b,i,j) \leftrightarrow (c,d,k,l)$.
+Finally, some of the pairs will not contribute to variance and can be excluded: contraction of a pair inside the same $Y$ contribute to $\left\langle Y \right\rangle = \mathbb I$ and must be subtracted; and if all the contracted pairs correspond to $Y$'s with the same indices, that contributes to the mean of $D_{\rm KL}$ and has to be subtracted too.
+
+We find there are 56 pair assignments contributing to $\approx 16(n_S-1)^4 \Var [D_{\rm KL} (\Psi_0, X)]$, but no more than 8 of them are distinct after using symmetries:
+\begin{align}
+& 8 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left\langle \delta y_{a,i} \delta y_{a,j} \right\rangle \left\langle \delta y_{b,i} \delta y_{c,k} \right\rangle \left\langle \delta y_{b,j} \delta y_{c,l} \right\rangle \left\langle \delta y_{d,k} \delta y_{d,l} \right\rangle = \nonumber \\
+& 8 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left( \delta^{ij} - \frac1{n_S} \right) \left( \delta^{ik} - \frac1{n_S} \right) \delta^{bc} \left( \delta^{jl} - \frac1{n_S} \right) \delta^{bc} \left( \delta^{kl} - \frac1{n_S} \right)
+%8 N_{\rm bins}^3 \sum_{i,j,k,l=1}^{n_S} \left( \delta^{ij} - \frac1{n_S} \right) \left( \delta^{ik} - \frac1{n_S} \right) \left( \delta^{jl} - \frac1{n_S} \right) \left( \delta^{kl} - \frac1{n_S} \right) \\
+%8 N_{\rm bins}^3 \sum_{i,j,k=1}^{n_S} \left( \delta^{ij} - \frac1{n_S} \right) \left( \delta^{ik} - \frac1{n_S} \right) \left( \delta^{jk} - \frac2{n_S} + \frac1{n_S} \right) \\
+%8 N_{\rm bins}^3 \sum_{i,j=1}^{n_S} \left( \delta^{ij} - \frac1{n_S} \right) \left( \delta^{ij} - \frac1{n_S} \right) = 8 N_{\rm bins}^3 \sum_{i,j=1}^{n_S} \left( \delta^{ij} - \frac2{n_S} \delta^{ij} + \frac1{n_S^2} \right) = 8 N_{\rm bins}^3 (n_S - 2 + 1)
+= \nonumber \\
+& 8 N_{\rm bins}^3 (n_S - 1)
+\end{align}
+\begin{align}
+& 16 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left\langle \delta y_{a,i} \delta y_{a,j} \right\rangle \left\langle \delta y_{b,i} \delta y_{c,k} \right\rangle \left\langle \delta y_{b,j} \delta y_{d,l} \right\rangle \left\langle \delta y_{d,k} \delta y_{c,l} \right\rangle = \nonumber \\
+& 16 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left( \delta^{ij} - \frac1{n_S} \right) \left( \delta^{ik} - \frac1{n_S} \right) \delta^{bc} \left( \delta^{jl} - \frac1{n_S} \right) \delta^{bd} \left( \delta^{kl} - \frac1{n_S} \right) \delta^{dc} = \nonumber \\
+& 16 N_{\rm bins}^2 (n_S-1)
+\end{align}
+\begin{align}
+& 8 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left\langle \delta y_{a,i} \delta y_{b,j}\right\rangle \left\langle \delta y_{b,i} \delta y_{c,k} \right\rangle \left\langle \delta y_{a,j} \delta y_{d,l} \right\rangle \left\langle \delta y_{d,k} \delta y_{c,l} \right\rangle = \nonumber \\
+& 8 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left( \delta^{ij} - \frac1{n_S} \right) \delta^{ab} \left( \delta^{ik} - \frac1{n_S} \right) \delta^{bc} \left( \delta^{jl} - \frac1{n_S} \right) \delta^{ad} \left( \delta^{kl} - \frac1{n_S} \right) \delta^{cd} = \nonumber \\
+& 8 N_{\rm bins} (n_S-1)
+\end{align}
+\begin{align}
+& 4 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left\langle \delta y_{a,i} \delta y_{c,k} \right\rangle \left\langle \delta y_{b,i} \delta y_{d,k} \right\rangle \left\langle \delta y_{a,j} \delta y_{c,l} \right\rangle \left\langle \delta y_{b,j} \delta y_{d,l} \right\rangle = \nonumber \\
+& 4 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left( \delta^{ik} - \frac1{n_S} \right) \delta^{ac} \left( \delta^{ik} - \frac1{n_S} \right) \delta^{bd} \left( \delta^{jl} - \frac1{n_S} \right) \delta^{ac} \left( \delta^{jl} - \frac1{n_S} \right) \delta^{bd} = \nonumber \\
+& 4 N_{\rm bins}^2 (n_S-1)^2
+\end{align}
+\begin{align}
+& 4 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left\langle \delta y_{a,i} \delta y_{c,k} \right\rangle \left\langle \delta y_{b,i} \delta y_{d,k} \right\rangle \left\langle \delta y_{a,j} \delta y_{d,l} \right\rangle \left\langle \delta y_{b,j} \delta y_{c,l} \right\rangle = \nonumber \\
+& 4 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left( \delta^{ik} - \frac1{n_S} \right) \delta^{ac} \left( \delta^{ik} - \frac1{n_S} \right) \delta^{bd} \left( \delta^{jl} - \frac1{n_S} \right) \delta^{ad} \left( \delta^{jl} - \frac1{n_S} \right) \delta^{bc} = \nonumber \\
+& 4 N_{\rm bins} (n_S-1)^2
+\end{align}
+\begin{align}
+& 4 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left\langle \delta y_{a,i} \delta y_{c,k} \right\rangle \left\langle \delta y_{b,i} \delta y_{c,l} \right\rangle \left\langle \delta y_{a,j} \delta y_{d,k} \right\rangle \left\langle \delta y_{b,j} \delta y_{d,l} \right\rangle = \nonumber \\
+& 4 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left( \delta^{ik} - \frac1{n_S} \right) \delta^{ac} \left( \delta^{il} - \frac1{n_S} \right) \delta^{bc} \left( \delta^{jk} - \frac1{n_S} \right) \delta^{ad} \left( \delta^{jl} - \frac1{n_S} \right) \delta^{bd} = \nonumber \\
+& 4 N_{\rm bins} (n_S-1)
+\end{align}
+\begin{align}
+& 8 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left\langle \delta y_{a,i} \delta y_{c,k} \right\rangle \left\langle \delta y_{b,i} \delta y_{c,l} \right\rangle \left\langle \delta y_{a,j} \delta y_{d,l} \right\rangle \left\langle \delta y_{b,j} \delta y_{d,k} \right\rangle = \nonumber \\
+& 8 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left( \delta^{ik} - \frac1{n_S} \right) \delta^{ac} \left( \delta^{il} - \frac1{n_S} \right) \delta^{bc} \left( \delta^{jl} - \frac1{n_S} \right) \delta^{ad} \left( \delta^{jk} - \frac1{n_S} \right) \delta^{bd} = \nonumber \\
+& 8 N_{\rm bins} (n_S-1)
+\end{align}
+\begin{align}
+& 4 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left\langle \delta y_{a,i} \delta y_{c,k} \right\rangle \left\langle \delta y_{b,i} \delta y_{d,l} \right\rangle \left\langle \delta y_{a,j} \delta y_{c,l} \right\rangle \left\langle \delta y_{b,j} \delta y_{d,k} \right\rangle = \nonumber \\
+& 4 \sum_{a,b,c,d=1}^{N_{\rm bins}} \sum_{i,j,k,l=1}^{n_S} \left( \delta^{ik} - \frac1{n_S} \right) \delta^{ac} \left( \delta^{il} - \frac1{n_S} \right) \delta^{bd} \left( \delta^{jl} - \frac1{n_S} \right) \delta^{ac} \left( \delta^{jk} - \frac1{n_S} \right) \delta^{bd} = \nonumber \\
+& 4 N_{\rm bins}^2 (n_S-1)
+\end{align}
+
+Gathering all together gives
+\begin{align} \label{eq:Var-tr-deltaY2}
+\Var \Argf{\tr \Args{\Arg{\bf \delta Y}^2}} \approx
+% & \frac{N_{\rm bins}}{(n_S-1)^3} [8 N_{\rm bins}^2 + 16 N_{\rm bins} + 8 + 4 N_{\rm bins} (n_S-1) + 4 (n_S-1) + 4 + 8 + 4 N_{\rm bins}] = \nonumber \\
+& \frac{4 N_{\rm bins}}{(n_S-1)^3} [2 N_{\rm bins}^2 + 4 N_{\rm bins} + 4 + (N_{\rm bins} + 1) n_S] \nonumber \\
+=& \frac{4 N_{\rm bins}}{(n_S-1)^3} [(N_{\rm bins} + 1) (n_S + 2 N_{\rm bins} + 2) + 2].
+\end{align}
+
+Then, according to \cref{eq:D_KL-Y-approx}, the variance of the KL divergence is approximately 16 times smaller:
+\begin{equation} \label{eq:D_KL-variance}
+\Var [D_{\rm KL} \Arg{{\bf \Psi}_0, {\bf X}}] \approx \frac{N_{\rm bins} [(N_{\rm bins} + 1) (n_S + 2 N_{\rm bins} + 2) + 2]}{4(n_S-1)^3}.
+\end{equation}
+This is an approximation because in \cref{eq:D_KL-Y-approx} the Taylor expansion was truncated at the quadratic order in $\bf \delta Y$.
+Other derivation steps are exact.
+
+\subsection{Inverse test}
+\label{subsec:inv-test}
+
+We considered how different $\chi^2$ would result from one matrix compared to the other.
+If $\bm u$ is an unit vector in $N_{\rm bins}$-dimensional space ($\bm u^T \bm u = 1$), then $\bm w = {\bf C}_2^{1/2} \bm u$ gives an unit $\chi^2$ according to $C_2$: $\bm w^T {\bf C}_2^{-1} \bm w=1$.
+Here ${\bf C}_2^{1/2}$ means the matrix square root of ${\bf C}_2$ -- a matrix with the same eigenvectors and eigenvalues equal to the square roots of corresponding eigenvalues of the original matrix.
+Then we consider the $\chi^2$ with respect to ${\bf C}_1$ (${\bf \Psi}_1$): $\bm w^T {\bf \Psi}_1 \bm w$ and subtract the expected value of 1:
+\begin{equation}
+\bm w^T {\bf \Psi}_1 \bm w - 1 = \bm u^T \Args{{\bf C}_2^{1/2} {\bf \Psi}_1 {\bf C}_2^{1/2} - {\bf \mathbb I}} \bm u.
+\end{equation}
+Taking the RMS over all directions of $u$, one arrives at the RMS eigenvalue of this matrix, which can be expressed through the Frobenius norm:
+\begin{equation}
+R_{\rm inv} \Arg{{\bf \Psi}_1, {\bf C}_2} = \frac1{\sqrt{N_{\rm bins}}} \Abs{\Abs{{\bf C}_2^{1/2} {\bf \Psi}_1 {\bf C}_2^{1/2} - {\bf \mathbb I}}}_F.
+\end{equation}
+The Frobenius norm can be recast as a trace and simplified further using its cyclic property:
+\begin{align}
+\Abs{\Abs{{\bf C}_2^{1/2} {\bf \Psi}_1 {\bf C}_2^{1/2} - {\bf \mathbb I}}}_F =& \tr \Args{\Arg{{\bf C}_2^{1/2} {\bf \Psi}_1 {\bf C}_2^{1/2} - {\bf \mathbb I}}^T \Arg{{\bf C}_2^{1/2} {\bf \Psi}_1 {\bf C}_2^{1/2} - {\bf \mathbb I}}} \nonumber \\
+=& \tr \Args{\Arg{{\bf C}_2^{1/2} {\bf \Psi}_1 {\bf C}_2^{1/2} - {\bf \mathbb I}}^2} \nonumber \\
+=& \tr \Arg{{\bf C}_2^{1/2} {\bf \Psi}_1 {\bf C}_2 {\bf \Psi}_1 {\bf C}_2^{1/2} - 2 {\bf C}_2^{1/2} {\bf \Psi}_1 {\bf C}_2^{1/2} + {\bf \mathbb I}} \nonumber \\
+=& \tr \Arg{{\bf \Psi}_1 {\bf C}_2 {\bf \Psi}_1 {\bf C}_2 - 2 {\bf \Psi}_1 {\bf C}_2 + {\bf \mathbb I}} = \tr \tr \Args{\Arg{{\bf \Psi}_1 {\bf C}_2 - {\bf \mathbb I}}^2}.
+\end{align}
+This allows us to compute the quantity as
+\begin{equation}
+R_{\rm inv} \Arg{{\bf \Psi}_1, {\bf C}_2} = \sqrt{\frac{\tr \Args{\Arg{{\bf \Psi}_1 {\bf C}_2 - {\bf \mathbb I}}^2}}{N_{\rm bins}}},
+\end{equation}
+which is more computationally robust -- it is better to avoid factorizing (and inverting) covariance matrices (especially the sample one) when possible.
+
+It is notable that this metric is related to the discriminant matrix
+\begin{equation} \label{eq:discriminant_matrix}
+{\bf P} = \sqrt{{\bf \Psi}_R}^T {\bf C}_S \sqrt{{\bf \Psi}_R} - {\bf \mathbb{I}},
+\end{equation}
+where $\sqrt{{\bf \Psi}_R}$ is the lower Cholesky decomposition, used in \cite{rascalC,rascalC-legendre-3}.
+Through a similar procedure, one can find that its Frobenius norm is the same as above:
+\begin{equation}
+\Abs{\Abs{\mathbf P}}_F^2 = \tr \Args{\Arg{{\bf \Psi}_1 {\bf C}_2 - {\bf \mathbb I}}^2}.
+\end{equation}
+However, the interpretation of elements of the discriminant matrix is less clear.
+
+Now let us consider the square of this metric (to remove the root):
+\begin{equation}
+R_{\rm inv}^2 \Arg{{\bf \Psi}_0, {\bf X}} = \frac1{N_{\rm bins}} \tr [\Psi_0 X \Psi_0 X - 2 \Psi_0 X + \mathbb I].
+\end{equation}
+Remembering \cref{eq:Y-relation}, we arrive to
+\begin{equation}
+R_{\rm inv}^2 \Arg{{\bf \Psi}_0, {\bf X}} = \frac1{N_{\rm bins}} \tr \Args{{\bf Y}^2 - 2 {\bf Y} + {\bf \mathbb I}}.
+\end{equation}
+Furthermore, expanding in $\bf \delta Y$ (according to \cref{eq:delta-Y}), we get
+\begin{equation} \label{eq:R_inv2-delta_Y}
+R_{\rm inv}^2 \Arg{{\bf \Psi}_0, {\bf X}} = \frac1{N_{\rm bins}} \tr \Args{\Arg{\bf \delta Y}^2},
+\end{equation}
+which is similar to \cref{eq:D_KL-Y-approx} up to a constant factor of $1/N_{\rm bins}$ and lack of approximations.
+We can obtain the expectation value by plugging in \cref{eq:Y-covariance}:
+\begin{equation} \label{eq:R_inv2-expectation}
+\Avg{R_{\rm inv}^2 \Arg{{\bf \Psi}_0, {\bf X}}} = \frac{N_{\rm bins}+1}{n_S-1}.
+\end{equation}
+For variance we can use \cref{eq:Var-tr-deltaY2}:
+\begin{equation} \label{eq:R_inv2-variance}
+\Var \Args{R_{\rm inv}^2 \Arg{{\bf \Psi}_0, {\bf X}}} = \frac{4 [(N_{\rm bins} + 1) (n_S + 2 N_{\rm bins} + 2) + 2]}{N_{\rm bins} (n_S-1)^3}.
+\end{equation}
+Assuming $\Var \Args{R_{\rm inv}^2 \Arg{{\bf \Psi}_0, {\bf X}}} \ll \Avg{R_{\rm inv}^2 \Arg{{\bf \Psi}_0, {\bf X}}}^2$, we can take the square root to estimate the mean and variance of not-squared metric as
+\begin{align} \label{eq:R_inv-expectation}
+\Avg{R_{\rm inv} \Arg{{\bf \Psi}_0, {\bf X}}} \approx & \sqrt{\Avg{R_{\rm inv}^2 \Arg{{\bf \Psi}_0, {\bf X}}}} = \sqrt{\frac{N_{\rm bins}+1}{n_S-1}}, \\ \label{eq:R_inv-variance}
+\Var \Args{R_{\rm inv} \Arg{{\bf \Psi}_0, {\bf X}}} \approx & \frac{\Var \Args{R_{\rm inv}^2 \Arg{{\bf \Psi}_0, {\bf X}}}}{4\Avg{R_{\rm inv}^2 \Arg{{\bf \Psi}_0, {\bf X}}}} = \frac{(N_{\rm bins} + 1) (n_S + 2 N_{\rm bins} + 2) + 2}{N_{\rm bins} (N_{\rm bins}+1) (n_S-1)^2}.
+\end{align}
+Also, it is useful to note that $R_{\rm inv}$ is related to the $\chi^2$ approximation of minus log-likelihood, considering the covariance of all covariance matrix elements.
+This is rather easy to see with ${\bf \delta Y}$ expression (\cref{eq:R_inv2-delta_Y}).
+Since ${\bf \delta Y}$ is real and symmetric, we obtain
+\begin{equation}
+N_{\rm bins} \times R_{\rm inv}^2 \Arg{{\bf \Psi}_0, {\bf X}} = \Abs{\Abs{\bf \delta Y}}^2_F = \sum_{a,b=1}^{N_{\rm bins}} \Arg{\delta Y_{ab}}^2.
+\end{equation}
+From \cref{eq:Y-covariance} we conclude that distinct elements of $\bf Y$ matrix have zero covariance (excluding the pairs symmetric with respect to the diagonal), its diagonal elements have a variance of $2/(n_S-1)$ and off-diagonal elements have a variance of $1/(n_S-1)$.
+Then this covariance is trivial to invert, and we have to sum the squares of the deviation of independent elements divided by their variance to get the $\chi^2$:
+\begin{align}
+\chi^2 =& \Arg{n_S-1} \Args{\frac12 \sum_{a=1}^{N_{\rm bins}} \Arg{\delta Y_{aa}}^2 + \sum_{a=1}^{N_{\rm bins}} \sum_{b=a+1}^{N_{\rm bins}} \Arg{\delta Y_{ab}}^2} \nonumber \\
+=& \frac{n_S-1}2 \sum_{a,b=1}^{N_{\rm bins}} \Arg{\delta Y_{ab}}^2 = \frac{\Arg{n_S-1} N_{\rm bins}}2 \times R_{\rm inv}^2 \Arg{{\bf \Psi}_0, {\bf X}}.
+\end{align}
+Since elements of $\bf Y$ are independent linear combinations of elements of sample covariance matrix $\bf X$ (via \cref{eq:Y-relation}, since ${\bf \Psi}_0$ is not degenerate), the same holds for $\bf X$, but a direct computation without the ``rotation'' into $\bf Y$ would be significantly longer as the covariance of $X_{ab}$ elements (\cref{eq:X-covariance}) has a more generic and complex structure.
+
+\subsection{Mean chi-squared}
+\label{subsec:chi2}
+
+We consider the sum of $\chi^2$ associated with the deviation of data vectors in individual samples from the estimate of the average:
+\begin{equation}
+\sum_{i=1}^{n_S} \sum_{a,b=1}^{N_{\rm bins}} (x_{a,i} - \bar x_a) \Psi_{0,ab} (x_{b,i} - \bar x_b) = (n_S-1) \sum_{a,b=1}^{N_{\rm bins}} \Psi_{0,ab} X_{ab} = (n_S-1) \tr (\Psi_0 X).
+\end{equation}
+Remembering \cref{eq:measurement-normalization}, we can rewrite the LHS as
+\begin{equation} \label{eq:chi2_red_statistics}
+\sum_{i=1}^{n_S} \sum_{a,b=1}^{N_{\rm bins}} (y_{a,i} - \bar y_a) \delta_{ab} (y_{b,i} - \bar y_b) = \sum_{a=1}^{N_{\rm bins}} \sum_{i=1}^{n_S} (y_{a,i} - \bar y_a)^2 \sim \sum_{a=1}^{N_{\rm bins}} \chi^2(n_S-1) \sim \chi^2[N_{\rm bins} \times (n_S-1)].
+\end{equation}
+Therefore, the corresponding reduced $\chi^2$ is
+\begin{equation}
+\chi^2_{\rm red} = \frac1{N_{\rm bins}} \tr \Arg{{\bf \Psi}_0 {\bf X}}.
+\end{equation}
+
+\subsection{Validation of means and standard deviations}
+\label{subsec:stats-validation}
+
+To check the theoretical results from the previous sections, we have performed a quick Monte-Carlo validation.
+10,000 batches of 999 samples having 45 bins each have been generated.
+For simplicity, we have taken the true covariance and precision to be unity matrices $C_0=\Psi_0=\mathbb I$.
+This should not affect the results, save for numerical instabilities in matrix operations.
+Full 45-bin sample covariance and precision matrices have been estimated in each batch.
+Then, 25 bins were selected and projected into 5 quantities, for simplicity, using 5 random orthonormal vectors as parameter derivatives.
+Comparison between theoretical and sampled means and standard deviations is presented in \cref{tab:stats-validation}.
+Differences are most pronounced in $D_{\rm KL}$, but the disagreement is only in the second digit of standard deviation and fractions of standard deviation on the mean.
+Therefore, we report a close agreement, more than enough for the main part of the paper, where the scatter of \rascalc{} results is significantly larger than these standard deviations.
+We note that the results for $D_{\rm KL}$ and $R_{\rm inv}$ (\cref{eq:D_KL-expectation,eq:D_KL-variance,eq:R_inv-expectation,eq:R_inv-variance}) are approximate and we expect meaningful deviations from them, especially as $N_{\rm bins}$ increases, while the derivations for $R_{\rm inv}^2$ and $\chi^2_{\rm red}$ (\cref{eq:R_inv2-expectation,eq:R_inv2-expectation,eq:chi2_red_statistics}) are exact.
+
+\begin{table}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+ & & $D_{\rm KL}(\Psi_0, X)$ & $R_{\rm inv}(\Psi_0, X)$ & $\chi^2_{\rm red}(\Psi_0, X)$ \\
+\hline
+Measurement space & Theoretical & $0.519 \pm 0.024$ & $0.2147 \pm 0.0049$ & $1.0000 \pm 0.0067$ \\
+(45 bins) & Sampled & $0.526 \pm 0.023$ & $0.2146 \pm 0.0050$ & $1.0000 \pm 0.0067$ \\
+\hline
+Parameter space & Theoretical & $0.0075 \pm 0.0028$ & $0.078 \pm 0.014$ & $1.000 \pm 0.020$ \\
+(5 proj. from 25 bins) & Sampled & $0.0077 \pm 0.0028$ & $0.077 \pm 0.014$ & $1.000 \pm 0.020$ \\
+\hline
+\end{tabular}
+\caption[Theoretical and empirical statistical properties of covariance matrix comparison metrics]{Theoretical versus sampled mean $\pm$ std of covariance matrix comparison metrics with the true precision matrix. A close agreement can be seen.}
+\label{tab:stats-validation}
+\end{table}
+
+We have repeated this test with a realistic covariance matrix (\rascalc{} Average NG for pre-reconstruction) and derivatives of the observables with respect to the parameters (accordingly, for the BAO model before reconstruction) to confirm whether the comparison measures are indeed not affected.
+We have obtained the same numbers as in simpler test (\cref{tab:stats-validation}), and close agreement of $\sigma\Args{\sigma(\alpha_{\rm BAO})}/\sigma(\alpha_{\rm BAO})$ with $\Args{2(n_S-1)}^{-1/2}$ according to \cref{eq:sigma-sigma-alpha}.
+
+\section{Covariance for the combination of two regions}
+\label{sec:cov-comb}
+
+In this section, we document the procedure to compute the covariance matrix for the combination of two (or more) disjoint regions (volumes) using the covariances in each region.
+It is fully consistent with the correlation function treatment in the DESI data processing pipeline.
+
+\subsection{Angular bins}
+
+During the combination of regions labeled by $G$, DESI scripts simply add the total counts of every relevant kind $QQ$ (where each $Q$ can be $D$ or $R$, data or randoms\footnote{I.e. $Q^XQ^Y$ encompasses $D^XD^Y$, $D^XR^Y$, $R^XD^Y$ and $R^XR^Y$ count arrays if standard BAO reconstruction is not used. After reconstruction we also have $S$ -- shifted randoms, and the counts relevant to the Landy-Szalay estimator are $D^XD^Y$, $D^XS^Y$, $S^XD^Y$, $S^XS^Y$ and $R^XR^Y$.}):
+\begin{equation}
+    \qty(Q^XQ^Y)_a^c = \sum_G \qty(Q^XQ^Y_G)_a^c.
+\end{equation}
+
+The following technical details are important for the strictly correct implementation with \pycorr{}.
+The counts entering the correlation function estimator (\cref{eq:Landy-Szalay-binned-multi}) need to be normalized properly.
+Originally the main cause was the possibly different number of galaxies and random points \citep{Landy-Szalay,2PCF-estimators-comparison}.
+Now we are often weighting both types of points, and the pair counts weighted by the product of the two individual point weights can be normalized by the product of the sums of the weights\footnote{Exactly $\sum_i w_i^X \times \sum_j w_j^Y$ for cross-correlations ($X\ne Y$) and $\qty(\sum_i w_i^X)^2 - \sum_i \qty( w_i^X)^2$ for auto-correlations.}.
+\pycorr{} stores both the weighted counts ({\tt wcounts}) and their normalization ({\tt wnorm}).
+It is their ratio, the normalized counts, that enter the correlation function estimator (\cref{eq:Landy-Szalay-binned-multi}).
+Before adding the pair counts for the two regions, DESI scripts bring counts of different types to the same normalization within each region (via the {\tt normalize} method\footnote{By default, this method preserves the {\tt wnorm} of $D^XD^Y$ counts.}).
+During the combination of regions {\tt wnorm} are added as well as {\tt wcounts}.
+Therefore, the change of normalization within each region alters the relative contributions of the regions to different types of counts, even though it does not affect the region's correlation function.
+Therefore, this step is important to reproduce.
+With all count types brought to the same normalization (in each region and therefore in their combination), the {\tt wnorm} cancel out in the Landy-Szalay estimator (\cref{eq:Landy-Szalay-binned-multi}) and so it is sufficient to substitute only {\tt wcounts}.
+
+Then the total correlation function (\cref{eq:Landy-Szalay-binned-multi}) is simply the average of the two regions' correlation functions weighted by $RR$ counts:
+\begin{align}
+    \qty(\xi^{XY})_a^c &= \frac1{\qty(R^XR^Y)_a^c} \sum_G \qty(R^XR^Y_G)_a^c \qty(\xi^{XY}_G)_a^c \equiv \sum_G \qty(W^{XY}_G)_a^c \qty(\xi^{XY}_G)_a^c, \\
+    \qty(W^{XY}_G)_a^c &\equiv \frac{\qty(R^XR^Y_G)_a^c}{\qty(R^XR^Y)_a^c}.
+\end{align}
+Then the covariance matrix for the combined region is simply
+\begin{align}
+    \qty(C^{XY,ZW})_{ab}^{cd} \approx \sum_G \qty(C^{XY,ZW}_G)_{ab}^{cd} \qty(W^{XY}_G)_a^c \qty(W^{ZW}_G)_b^d,
+\end{align}
+where we neglect the covariance between the correlation functions in different regions, the estimation of which poses extra challenges.
+We expect this to be a safe approximation for the North and South Galactic caps in the DESI footprint because the separation between galaxies in different caps is significantly larger than the maximum separation for correlation function measurements (200 $\ihMpc$).
+
+\subsection{Legendre}
+
+We can build upon the results for angular bins, with conversions both ways between them and Legendre moments.
+The Legendre multipoles are estimated from the angular bins via \cref{eq:Legendre-from-binned-2PCF,eq:Legendre-projection-factors}:
+\begin{equation}
+    \qty(\xi^{XY})^\ell_a = \sum_c \qty(\xi^{XY})_a^c F^\ell_c.
+\end{equation}
+One can do the reverse approximately with bin-averaged values of the Legendre polynomials\footnote{Or possibly with just the middles of the bins, but this way they end up very much related to already computed projection factors $F^\ell_c$.}:
+\begin{align}
+    L_\ell^c &\equiv \frac1{\Delta\mu_c} \int_{\Delta\mu_c} d\mu\, L_\ell(\mu) = \frac{F^\ell_c}{(2\ell + 1) \Delta\mu_c} \label{eq:Legendre-polynomial-means}, \\
+    \qty(\xi^{XY})_a^c &\approx \sum_\ell \qty(\hat \xi^{XY})^\ell_a L_\ell^c. \label{eq:binnned-from-Legendre-2PCF}
+\end{align}
+These do not depend on the region.
+Additional approximation comes from the fact that we limit the multipole index --- in this work, we only consider $\ell=0,2,4$.
+
+With this, we can work out the partial derivative of the Legendre moment of the combined correlation function with respect to one in each of the regions in the following steps:
+\begin{equation}
+    \frac{\partial \qty(\xi^{XY})^\ell_a}{\partial \qty(\xi^{XY}_G)^{\ell_1}_a} = \sum_c \frac{\partial \qty(\xi^{XY})^\ell_a}{\partial \qty(\xi^{XY})^c_a} \frac{\partial \qty(\xi^{XY})^c_a}{\partial \qty(\xi^{XY}_G)^c_a} \frac{\partial \qty(\xi^{XY}_G)^c_a}{\partial \qty(\xi^{XY}_G)^{\ell_1}_a} \approx \sum_c F_c^\ell \qty(W^{XY}_G)_a^c L^c_{\ell_1} \equiv \qty(W_G^{XY})^{\ell,\ell_1}_a;
+\end{equation}
+the different separation bins and correlation functions stay independent.
+
+Then the covariance matrix for the combined region's 2PCF is
+\begin{align}
+    \qty(C^{XY,ZW})_{ab}^{\ell\ell'} \approx \sum_G \sum_{\ell_1,\ell'_1} \qty(C^{XY,ZW}_G)_{ab}^{\ell_1\ell'_1} \qty(W^{XY}_G)_a^{\ell,\ell_1} \qty(W^{ZW}_G)_b^{\ell',\ell'_1},
+\end{align}
+here we also neglect the covariance between the correlation functions in different regions.

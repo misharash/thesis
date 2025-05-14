@@ -1,0 +1,29 @@
+\begin{tikzpicture}[node distance=2cm]
+    \node (data) [start] {Data catalog};
+    \node (randoms) [start, left of=data, xshift=-4 cm] {Random catalog};
+    \node (full_xi) [process, below of=data] {Full 2PCF};
+    \node (jack_xi) [process, right of=full_xi, xshift=2 cm] {Jackknife 2PCF};
+    \node (RR) [process, left of=full_xi, xshift=-2 cm, align=center] {$RR$ counts\\full and jackknife};
+    \node (jack_cov) [process, below of=jack_xi] {Jackknife covariance ${\bf C}_J$};
+    \node (RascalC) [process, below of=randoms, yshift=-2 cm] {\rascalc{}};
+    \node (jack_model) [process, right of=RascalC, xshift=2 cm, align=center] {Jackknife model\\ ${\bf \tilde C}_J(\snrescaling)$};
+    \node (full_model) [process, below of=RascalC, align=center] {Full model\\ ${\bf \tilde C}(\snrescaling)$};
+    \node (fit_alpha) [process, below of=jack_model] {Best fit: $\snrescaling^*$};
+    \node (full_cov) [stop, below of=full_model, align=center] {Full covariance\\ ${\bf C}_R = {\bf \tilde C}(\snrescaling^*)$};
+    \draw [arrow] (data) -- (jack_xi);
+    \draw [arrow] (randoms) -- (jack_xi.north west);
+    \draw [arrow] (data) -- (full_xi);
+    \draw [arrow] (randoms) -- (full_xi);
+    \draw [arrow] (randoms) -- (RR);
+    \draw [arrow] (jack_xi) -- (jack_cov);
+    \draw [arrow] (RR.south east) -- (jack_cov.north west);
+    \draw [arrow] (full_xi) -- (RascalC);
+    \draw [arrow] (RR) -- (RascalC);
+    \draw [arrow] (randoms) -- (RascalC);
+    \draw [arrow] (RascalC) -- (jack_model);
+    \draw [arrow] (RascalC) -- (full_model);
+    \draw [arrow] (jack_model) -- (fit_alpha);
+    \draw [arrow] (jack_cov) -- (fit_alpha);
+    \draw [arrow] (full_model) -- (full_cov);
+    \draw [arrow] (fit_alpha) -- (full_cov);
+\end{tikzpicture}
