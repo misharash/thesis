@@ -13,8 +13,8 @@ There are two options:
    https://github.com/kolesarm/harvard-gsas-thesis/archive/master.zip
 
 ** Usage
-The file =thesis.tex= contains a sample thesis, from which and introduction and
-three sample thesis chapters and an appendix are included. It compiles with
+The file =thesis.tex= contains a sample thesis, from which an introduction,
+three sample thesis chapters, and an appendix are included. It compiles with
 =pdflatex= to produce a sample =thesis.pdf= document. The =.tex= files contain a
 number of specific pointers that should help to adapt the sample file to your
 needs. Keep the class file, =gsasthesis.cls= in the same directory as
